@@ -3,10 +3,13 @@ package org.example.testng;
 import org.example.pom.FormPom;
 import org.example.utils.Driver;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import java.net.MalformedURLException;
 
 public class FormTest {
 
@@ -25,8 +28,8 @@ public class FormTest {
     static public String CITY = "Delhi";
 
     @BeforeMethod
-    public void beforeMethod() {
-        driver = Driver.getAutoLocalDriver();
+    public void beforeMethod() throws MalformedURLException {
+        driver = Driver.getRemoteDriver();
         driver.manage().window().maximize();
     }
 
@@ -83,6 +86,24 @@ public class FormTest {
 
     @AfterMethod
     public void afterMethod() {
+        if (driver == null) {
+            return;
+        }
+
+        String sessionId = null;
+        if (driver instanceof RemoteWebDriver) {
+            sessionId = ((RemoteWebDriver) driver).getSessionId().toString();
+        }
+
         driver.quit();
+
+        if (sessionId != null) {
+            String remoteUrl = System.getProperty(
+                    "remote.url",
+                    System.getenv().getOrDefault("REMOTE_URL", "http://localhost:4444/wd/hub")
+            );
+            String videoBaseUrl = remoteUrl.replace("/wd/hub", "");
+            System.out.println("VIDEO: " + videoBaseUrl + "/video/" + sessionId + ".mp4");
+        }
     }
 }
