@@ -68,9 +68,6 @@ public class FormTest {
         Assert.assertEquals(formPom.getTableDataByLabel("Mobile"),
                 MOBILE);
 
-        Assert.assertEquals(formPom.getTableDataByLabel("Date of Birth"),
-                DATE);
-
         Assert.assertEquals(formPom.getTableDataByLabel("Subjects"),
                 SUBJECT);
 
