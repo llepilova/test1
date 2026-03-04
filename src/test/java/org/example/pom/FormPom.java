@@ -86,7 +86,7 @@ public class FormPom {
         mobile.sendKeys(mobileParam);
     }
 
-    // ✅ ФИКС ДАТЫ
+
     public void setDate(String date) {
         js.executeScript("arguments[0].value = arguments[1];",
                 dateOfBirth, date);
